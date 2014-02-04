@@ -20,3 +20,25 @@ test-result
 server.pid
 *.iml
 *.eml
+.history
+dist
+/.idea
+/*.iml
+/out
+/.idea_modules
+/.classpath
+/.project
+/RUNNING_PID
+/.settings
+
+// Don’t commit the following files and directories created by pub and dart2js
+packages/
+*.js_
+*.js.deps
+*.js.map
+
+// Include when developing application packages
+pubspec.lock
+
+// Avoid committing generated JavaScript files
+*.dart.js
