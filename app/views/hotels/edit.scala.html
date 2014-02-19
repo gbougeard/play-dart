@@ -1,0 +1,30 @@
+@(message: String, id: Long, hotelForm: Form[Hotel])(implicit flash: play.api.mvc.Flash)
+
+@import helper._
+
+
+@scripts = {
+}
+
+@main(message, scripts) {
+
+    @flash.get("success").map { message =>
+        <div class="alert alert-success">
+            <strong>Done!</strong> @message
+        </div>
+    }
+
+@form(routes.Hotels.update(id), 'class -> "form-horizontal") {
+
+@inputText(hotelForm("name"), '_label -> "Nom")
+@inputText(hotelForm("city"), '_label -> "City")
+
+<div class="form-actions">
+    <input type="submit" value="Save this hotel" class="btn btn-primary">
+    <a href="@routes.Hotels.view(id)" class="btn btn-info">View</a>
+    <a href="@routes.Hotels.list()" class="btn btn-inverse">Cancel</a>
+    <a href="@routes.Hotels.create()" class="btn btn-success">New</a>
+</div>
+
+}
+}

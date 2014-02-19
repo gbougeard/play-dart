@@ -1,0 +1,97 @@
+@(message: String, currentPage: Page[Booking], currentOrderBy: Int)(implicit flash: play.api.mvc.Flash)
+
+@import tags._
+
+ @scripts={}
+
+@****************************************
+* Helper generating menuChaine links    *
+****************************************@
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+routes.Bookings.list(newPage
+, newOrderBy.map { orderBy =>
+if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+}.getOrElse(currentOrderBy))
+}
+@**, currentFilter)
+**@
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(orderBy: Int, title: String) = {
+<th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
+    <a href="@link(0, Some(orderBy))">@title</a>
+</th>
+}
+
+@main(message, scripts) {
+
+@Option(currentPage.items).filterNot(_.isEmpty).map { bookings =>
+<a href="@routes.Bookings.list()" class="btn">Clear filters</a>
+        <hr/>
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+        @header(1,"BkgNum")
+        @header(2,"CustId")
+        @header(5,"HotelId")
+        @header(6,"RoomId")
+        @header(3,"Status")
+        @header(4,"From")
+        @header(5,"To")
+        @header(9,"Created")
+    </tr>
+    </thead>
+    <tbody>
+
+    @bookings.map {  booking =>
+            <tr>
+                <td><a href="@routes.Bookings.view(booking.bkgnum)">@booking.bkgnum</a></td>
+                <td>@booking.custid</td>
+                <td>@booking.hotelid</td>
+                <td>@booking.roomid</td>
+                <td>@booking.bkgstatus</td>
+                <td>@booking.fromDate.toString("yyyy-MM-dd")</td>
+                <td>@booking.toDate.toString("yyyy-MM-dd")</td>
+                <td>@booking.createDate.toString("yyyy-MM-dd")</td>
+            </tr>
+    }
+
+    </tbody>
+</table>
+
+<div id="pagination" class="pagination">
+    <ul>
+        @currentPage.prev.map { page =>
+        <li class="prev">
+            <a href="@link(page)">&larr; Previous</a>
+        </li>
+        }.getOrElse {
+        <li class="prev disabled">
+            <a>&larr; Previous</a>
+        </li>
+        }
+        <li class="current">
+            <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + bookings.size) of @currentPage.total</a>
+        </li>
+        @currentPage.next.map { page =>
+        <li class="next">
+            <a href="@link(page)">Next &rarr;</a>
+        </li>
+        }.getOrElse {
+        <li class="next disabled">
+            <a>Next &rarr;</a>
+        </li>
+        }
+    </ul>
+</div>
+
+}.getOrElse {
+
+<div class="well">
+    <em>Nothing to display</em>
+</div>
+
+}
+}

@@ -1,0 +1,119 @@
+@(message: String, hotel: Hotel)(implicit flash: play.api.mvc.Flash)
+
+    @scripts ={
+
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script>
+        function MapCtrl($scope) {
+        $scope.myMarkers = [];
+
+        $scope.mapOptions = {
+        center: new google.maps.LatLng(@hotel.latitude, @hotel.longitude),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        $scope.loadPlaces = function(){
+            console.log("@hotel.name");
+            $scope.myMarkers.push(new google.maps.Marker(
+            {
+                map: $scope.myMap,
+                position: (new google.maps.LatLng(@hotel.latitude, @hotel.longitude)),
+                title: "@hotel.name"
+            } ) ) ;
+        };
+
+        $scope.addMarker = function($event) {
+        $scope.myMarkers.push(new google.maps.Marker({
+        map: $scope.myMap,
+        position: $event.latLng
+        }));
+        };
+
+        $scope.setZoomMessage = function(zoom) {
+        $scope.zoomMessage = 'You just zoomed to '+zoom+'!';
+        console.log(zoom,'zoomed');
+        };
+
+        $scope.openMarkerInfo = function(marker) {
+        $scope.currentMarker = marker;
+        $scope.currentMarkerLat = marker.getPosition().lat();
+        $scope.currentMarkerLng = marker.getPosition().lng();
+        $scope.myInfoWindow.open($scope.myMap, marker);
+        };
+
+        $scope.setMarkerPosition = function(marker, lat, lng) {
+        marker.setPosition(new google.maps.LatLng(lat, lng));
+        };
+
+        $scope.loadPlaces();
+        }
+
+
+        </script>
+    }
+
+@main(message, scripts) {
+    <div class="header" >
+
+        <dl class="dl-horizontal">
+            <dt>Name</dt>
+            <dd>@hotel.name</dd>
+            <dt>Zipcode</dt>
+            <dd>@hotel.zipCode.getOrElse("-")</dd>
+            <dt>Addr1</dt>
+            <dd>@hotel.addr1.getOrElse("-")</dd>
+            <dt>Addr2</dt>
+            <dd>@hotel.addr2.getOrElse("-")</dd>
+            <dt>City</dt>
+            <dd>@hotel.city.getOrElse("-")</dd>
+            <dt>State</dt>
+            <dd>@hotel.state.getOrElse("-")</dd>
+            <dt>Latitude</dt>
+            <dd>@hotel.latitude.getOrElse("-")</dd>
+            <dt>Longitude</dt>
+            <dd>@hotel.longitude.getOrElse("-")</dd>
+        </dl>
+
+        <div class="row-fluid" ng-controller="MapCtrl">
+            <div class="span4">
+                <li ng-repeat="marker in myMarkers">
+                    <a ng-click="myMap.panTo(marker.getPosition())">Pan to {{$index}} {{marker.title}}</a>
+                </li>
+                    <!-- this is the confusing part. we have to point the map marker directive
+      at an existing google.maps.Marker object, so it can hook up events -->
+                <div ng-repeat="marker in myMarkers" ui-map-marker="myMarkers[$index]" ui-event="{'map-click': 'openMarkerInfo(marker)' }">
+                </div>
+
+                <div ui-map-info-window="myInfoWindow">
+                    <fieldset><legend>{{currentMarker.title}}</legend>
+                        <dl class="dl-horizontal">
+                            <dt>Lat</dt>
+                            <dd>{{currentMarkerLat}}</dd>
+                            <dt>Long</dt>
+                            <dd>{{currentMarkerLng}}</dd>
+                        </dl>
+                        @* <input ng-model="currentMarkerLat">
+                        <input ng-model="currentMarkerLng">
+                        @*<a ng-click="setMarkerPosition(currentMarker, currentMarkerLat, currentMarkerLng)">Set Position</a> **@
+                    </fieldset>
+                </div>
+            </div>
+
+                <!-- Giving the div an id="map_canvas" fix problems with twitter bootstrap affecting google maps -->
+            <div id="map_canvas" ui-map="myMap" class="map span8" ui-options="mapOptions">
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="form-actions">
+        <a href="@routes.Hotels.edit(hotel.id.getOrElse(0))" class="btn btn-primary">Edit</a>
+        <a href="@routes.Hotels.list()" class="btn btn-inverse">Cancel</a>
+        <a href="@routes.Hotels.create()" class="btn btn-success">New</a>
+    </div>
+
+}

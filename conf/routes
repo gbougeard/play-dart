@@ -3,10 +3,21 @@
 # ~~~~
 
 # Home page
-GET        /                    controllers.Application.index
+GET         /                       controllers.Application.index
 
-GET         /admin/metrics                                                                         com.kenshoo.play.metrics.MetricsController.metrics
+GET         /admin/metrics          com.kenshoo.play.metrics.MetricsController.metrics
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file           controllers.Assets.at(path="/public", file)
+
+# Hotels
+GET         /hotels/                controllers.Hotels.list(p:Int ?= 0,s:Int ?= 1)
+GET         /hotels/:id/edit        controllers.Hotels.edit(id : Long)
+POST        /hotels/:id/edit        controllers.Hotels.update(id : Long)
+GET         /hotels/new             controllers.Hotels.create
+POST        /hotels/new             controllers.Hotels.save
+GET         /hotels/:id             controllers.Hotels.view(id : Long)
+
+GET         /bookings               controllers.Bookings.list(p:Int ?= 0, s:Int ?= -4)
+GET         /bookings/:id           controllers.Bookings.view(id : String)

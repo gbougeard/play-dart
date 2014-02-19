@@ -1,0 +1,43 @@
+@(message: String, booking: Booking)(implicit flash: play.api.mvc.Flash)
+
+    @scripts = {
+    }
+
+@main(message, scripts) {
+    <div class="header" >
+
+        <dl class="dl-horizontal">
+            <dt>BkgNum</dt>
+            <dd>@booking.bkgnum</dd>
+            <dt>CustId</dt>
+            <dd>@booking.custid</dd>
+            <dt>HotelId</dt>
+            <dd>@booking.custid</dd>
+            <dt>Status</dt>
+            <dd>@booking.bkgstatus</dd>
+            <dt>From</dt>
+            <dd>@booking.fromDate.toString("yyyy-MM-dd")</dd>
+            <dt>To</dt>
+            <dd>@booking.toDate.toString("yyyy-MM-dd")</dd>
+            <dt>Created</dt>
+            <dd>@booking.createDate.toString("yyyy-MM-dd HH:mm")</dd>
+            <dt>Pax id</dt>
+            <dd>@booking.paxid</dd>
+            <dt>User id</dt>
+            <dd>@booking.userid</dd>
+            <dt>Custlogin id</dt>
+            <dd>@booking.custloginid</dd>
+            <dt>CCnum</dt>
+            <dd>@booking.ccnum.getOrElse("none")</dd>
+        </dl>
+
+
+    </div>
+
+
+
+    <div class="form-actions">
+        <a href="@routes.Bookings.list()" class="btn btn-inverse">Cancel</a>
+    </div>
+
+}
