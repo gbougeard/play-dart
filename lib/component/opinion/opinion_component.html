@@ -1,5 +1,20 @@
-<span class="stars"
-      ng-repeat="star in cmp.stars"
-      ng-class="cmp.starClass(star)">
-  {{cmp.starChar(star)}}
-</span>
+{{ cmp.opinion.id }} - <span class="stars" ng-repeat="star in cmp.stars"
+                             ng-class="cmp.starClass(star, cmp.opinion.note)"> {{cmp.starChar(star, cmp.opinion.note)}} </span>
+<a class="glyphicon glyphicon-plus" ng-click="isCollapsed = !isCollapsed">Détails</a>
+<ul collapse="!isCollapsed" class="list-unstyled">
+    <li>
+        <span class=" span10 stars" ng-repeat="star in cmp.stars"
+              ng-class="cmp.starClass(star, cmp.opinion.welcome)"> {{cmp.starChar(star, cmp.opinion.welcome)}} </span>
+        <p class="span2 label label-info">Welcome </p>
+    </li>
+    <li>
+        <span class="stars" ng-repeat="star in cmp.stars"
+               ng-class="cmp.starClass(star, cmp.opinion.atmosphere)"> {{cmp.starChar(star, cmp.opinion.atmosphere)}} </span>
+        <p class="label label-info">Atmosphere </p>
+    </li>
+    <li>
+        <span class="stars" ng-repeat="star in cmp.stars"
+               ng-class="cmp.starClass(star, cmp.opinion.comfort)"> {{cmp.starChar(star, cmp.opinion.comfort)}} </span>
+        <p class="label label-info">Comfort </p>
+    </li>
+</ul>

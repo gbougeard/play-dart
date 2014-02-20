@@ -32,7 +32,7 @@ main() {
 
   group('opinion component', () {
     test('should show the right number of stars', inject((OpinionComponent opinionCmp) {
-      Opinion opinion = new Opinion("test", 2, 143, 4.5);
+      Opinion opinion = new Opinion("test", 2, 143, 4.5, 5,5,5);
       opinionCmp.maxOpinion = '5';
       expect(opinionCmp.stars, equals([1, 2, 3, 4, 5]));
     }));

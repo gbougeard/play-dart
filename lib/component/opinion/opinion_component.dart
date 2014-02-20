@@ -59,12 +59,12 @@ class OpinionComponent {
     stars = new List.generate(count, (i) => i+1);
   }
 
-  String starClass(int star) {
-    return star > opinion.note ? _starOffClass : _starOnClass;
+  String starClass(int star, int value) {
+    return star > value ? _starOffClass : _starOnClass;
   }
 
-  String starChar(int star) {
-    return star > opinion.note ? _starOffChar : _starOnChar;
+  String starChar(int star, int value) {
+    return star > value ? _starOffChar : _starOnChar;
   }
 
 //  void handleClick(int star) {

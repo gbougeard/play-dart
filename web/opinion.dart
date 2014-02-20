@@ -3,6 +3,8 @@ import 'package:perf_api/perf_api.dart';
 import 'package:di/di.dart';
 import 'package:logging/logging.dart';
 
+import 'package:angular_ui/angular_ui.dart';
+
 import 'package:play_dart/domain.dart';
 import 'package:play_dart/component/opinion/opinion_component.dart';
 import 'package:play_dart/service/opinion_service.dart';
@@ -39,15 +41,15 @@ class OpinionController {
   bool recipesLoaded = false;
   bool categoriesLoaded = false;
 
-  int hotelid;
-  int custid;
+  int hotelid = 555;
+  int custid = 12;
 
   List<Opinion> _opinions;
 
   List<Opinion >get opinions => _opinions;
 
   OpinionController(Http this._http, OpinionService this._opinionService) {
-//    _loadData();
+    _loadData();
   }
 
   Opinion selectedOpinion;
@@ -80,6 +82,8 @@ class OpinionController {
 
 class MyAppModule extends Module {
   MyAppModule() {
+    install(new AngularUIModule());
+
     type(OpinionController);
     type(OpinionComponent);
     type(OpinionService);

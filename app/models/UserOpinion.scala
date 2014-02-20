@@ -13,7 +13,10 @@ case class UserOpinion(
                         id: Option[String],
                         hotelid: Long,
                         custid: Long,
-                        note: Double
+                        note: Double,
+                        welcome: Int,
+                        atmosphere: Int,
+                        comfort: Int
                         )
 
 // define tables

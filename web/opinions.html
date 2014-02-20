@@ -2,25 +2,34 @@
 <html ng-app>
 <head>
     <title>Opinions</title>
+    <link rel="stylesheet" href="packages/bootjack/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div opinions>
     <h3>Opinions List</h3>
-    <label for="custid">Cust Id</label>
-    <input type="number" id="custid" ng-model="ctrl.custid">
-    <label for="hotelid">Hotel Id</label>
-    <input type="number" id="hotelid" ng-model="ctrl.hotelid">
-    <input type="button" ng-click="ctrl.load()" value="Load">
+
+    <form role="form" class="form-inline">
+        <div class="form-group">
+            <label class="sr-only" for="custid">Cust Id</label>
+            <input type="number" id="custid" class="form-control" ng-model="ctrl.custid" placeholder="CustId">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="hotelid">Hotel Id</label>
+            <input type="number" id="hotelid" class="form-control" ng-model="ctrl.hotelid" placeholder="HotelId">
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="ctrl.load()">Load</button>
+    </form>
     <div>
-        <ul>
+        <ul class="list-unstyled">
             <li ng-repeat="opinion in ctrl.opinions">
                 <opinion max-rating="10" opinion="opinion"></opinion>
-                <pre>{{ opinion | json }}</pre>
             </li>
         </ul>
     </div>
+    <pre>custid : {{ ctrl.custid }} </pre>
+    <pre>hotelid: {{  ctrl.hotelid }}</pre>
 </div>
 
 <script src="packages/shadow_dom/shadow_dom.min.js"></script>

@@ -9,7 +9,7 @@ import '../domain.dart';
 class OpinionService {
   final Logger log = new Logger('OpinionService');
 
-  String _opinionUrl = 'http://luc.dev.it.int:9000/opinions';
+  String _opinionUrl = '/opinions';
   Http _http;
 
   OpinionService(Http this._http) {
