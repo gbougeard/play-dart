@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>Opinions</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div opinions>
+    <h3>Opinions List</h3>
+    <div>
+        <ul>
+            <li ng-repeat="opinion in ctrl.opinions">
+                <opinion max-rating="10" opinion="opinion"></opinion>
+                <pre>{{ opinion | json }}</pre>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="packages/shadow_dom/shadow_dom.min.js"></script>
+<script type="application/dart" src="opinion.dart"></script>
+<script type="text/javascript" src="packages/browser/dart.js"></script>
+</body>
+</html>

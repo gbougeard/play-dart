@@ -21,3 +21,5 @@ GET         /hotels/:id             controllers.Hotels.view(id : Long)
 
 GET         /bookings               controllers.Bookings.list(p:Int ?= 0, s:Int ?= -4)
 GET         /bookings/:id           controllers.Bookings.view(id : String)
+
+GET         /opinions/:cid/:hid     controllers.UserOpinions.byHotelidAndCustid(hid:Long, cid:Long)

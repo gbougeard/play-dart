@@ -38,8 +38,13 @@ libraryDependencies ++= Seq(
 
 play.Project.playScalaSettings
 
-dartEntryPoints ++= Seq("main.dart")
+dartEntryPoints ++= Seq("main.dart" , "opinion.dart")
 
+
+//dartEntryPoints ++= Seq("main.dart", "opinion_ctrl.dart", "lib/domain.dart", "lib/component/opinion/opinion_component.dart")
+//
 //dartWebUIEntryPoints += "testwebui.html"
 
 dartDev := true
+
+dartVerbose := true

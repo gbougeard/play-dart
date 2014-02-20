@@ -5,6 +5,7 @@ dependencies:
   browser: any
   js: any
   shadow_dom: any
+  logging: any
 
 dev_dependencies:
   unittest: any
