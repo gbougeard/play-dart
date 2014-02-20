@@ -8,6 +8,11 @@
 
 <div opinions>
     <h3>Opinions List</h3>
+    <label for="custid">Cust Id</label>
+    <input type="number" id="custid" ng-model="ctrl.custid">
+    <label for="hotelid">Hotel Id</label>
+    <input type="number" id="hotelid" ng-model="ctrl.hotelid">
+    <input type="button" ng-click="ctrl.load()" value="Load">
     <div>
         <ul>
             <li ng-repeat="opinion in ctrl.opinions">

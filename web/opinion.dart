@@ -39,16 +39,22 @@ class OpinionController {
   bool recipesLoaded = false;
   bool categoriesLoaded = false;
 
+  int hotelid;
+  int custid;
+
   List<Opinion> _opinions;
 
   List<Opinion >get opinions => _opinions;
 
   OpinionController(Http this._http, OpinionService this._opinionService) {
-    log.info("Construct");
-    _loadData();
+//    _loadData();
   }
 
   Opinion selectedOpinion;
+
+  void load(){
+    _loadData();
+  }
 
   void selectOpinion(Opinion opinion) {
     selectedOpinion = opinion;
@@ -56,7 +62,7 @@ class OpinionController {
 
   void _loadData() {
     log.fine("loadData");
-    _opinionService.getAllOpinions(12, 10002).then((List<Opinion> allOpinions) {
+    _opinionService.getAllOpinions(custid, hotelid).then((List<Opinion> allOpinions) {
       _opinions = allOpinions;
       recipesLoaded = true;
     }) ;
