@@ -1,7 +1,9 @@
 package models.database
 
+import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
-import com.github.tototoshi.slick.JodaSupport._
+import scala.slick.lifted.Tag
+import com.github.tototoshi.slick.MySQLJodaSupport._
 import org.joda.time.DateTime
 import models.Booking
 
@@ -9,7 +11,7 @@ import models.Booking
  * Created by gbougeard on 12/9/13.
  */
 // define tables
-private[models] object Bookings extends Table[Booking]("booking") {
+class Bookings(tag:Tag) extends Table[Booking](tag, "booking") {
 
   def bkgnum = column[String]("bkgnum")
 
@@ -27,17 +29,14 @@ private[models] object Bookings extends Table[Booking]("booking") {
 
   def createDate = column[DateTime]("createDate")
 
-  def custloginid = column[String]("custloginid")
-
   def paxid = column[Long]("paxid")
 
   def userid = column[String]("userid")
 
-  def ccnum = column[Option[String]]("ccnum")
+  def custloginid = column[String]("custloginid")
 
-  def * = bkgnum ~ hotelid ~ custid ~ roomid ~ bkgstatus ~ fromDate ~ toDate ~ createDate ~ paxid ~ userid ~ custloginid ~ ccnum <>(Booking.apply _, Booking.unapply _)
+  def ccnum = column[String]("ccnum")
 
+  def * = (bkgnum , hotelid , custid , roomid , bkgstatus , fromDate , toDate , createDate , paxid , userid , custloginid , ccnum.?) <>(Booking.tupled, Booking.unapply _ )
 
-  val byCustId = createFinderBy(_.custid)
-  val byBkgNum = createFinderBy(_.bkgnum)
 }

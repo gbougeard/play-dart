@@ -3,6 +3,8 @@ package models
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Writes
+import scala.slick.lifted.TableQuery
+import models.database.{HotelCatRooms, UserOpinions, Bookings, Hotels}
 
 // Use the implicit threadLocalSession
 
@@ -23,6 +25,13 @@ object Page {
       (__ \ 'total).write[Long]
     ) (unlift(Page.unapply[A]))
 
+}
+
+private[models] trait DAO {
+  val Hotels = TableQuery[Hotels]
+  val Bookings = TableQuery[Bookings]
+  val UserOpinions = TableQuery[UserOpinions]
+  val HotelCatRooms = TableQuery[HotelCatRooms]
 }
 
 

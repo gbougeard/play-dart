@@ -3,8 +3,12 @@ package controllers
 import play.api.mvc._
 
 import models.{BookingFilter, Booking}
-import models.Booking._
+import models.Bookings._
+
 import play.api.libs.json.Json
+
+import play.api.db.slick._
+import play.api.Play.current
 
 
 object Bookings extends Controller {
@@ -17,7 +21,7 @@ object Bookings extends Controller {
     Home
   }
 
-  def list(page: Int, orderBy: Int) = Action {
+  def list(page: Int, orderBy: Int) = DBAction {
     implicit request =>
       val custId: Option[Long] = request.getQueryString("custid").map {
         _.toLong
@@ -31,7 +35,7 @@ object Bookings extends Controller {
 
       val bookingFilter = new BookingFilter(custId, hotelId, statuses)
 
-      val bookings = Booking.findPage(page, orderBy, bookingFilter)
+      val bookings = models.Bookings.findPage(page, orderBy, bookingFilter)
 
       render {
         case Accepts.Html() => Ok(views.html.bookings.list("List bookings", bookings, orderBy))
@@ -39,9 +43,9 @@ object Bookings extends Controller {
       }
   }
 
-  def view(id: String) = Action {
+  def view(id: String) = DBAction {
     implicit request =>
-      Booking.findByBkgNum(id).map {
+      models.Bookings.findByBkgNum(id).map {
         booking => {
           render {
             case Accepts.Html() => Ok(views.html.bookings.view("View booking", booking))

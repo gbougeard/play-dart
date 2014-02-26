@@ -29,6 +29,8 @@ libraryDependencies ++= Seq(
   slf4j,
   logbackClassic,
   mysql,
+  "joda-time" % "joda-time" % "2.3",
+  "org.joda" % "joda-convert" % "1.5",
   jodaMapper,
   playSlick,
   playMetrics,

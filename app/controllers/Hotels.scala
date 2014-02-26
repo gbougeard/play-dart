@@ -6,12 +6,10 @@ import play.api.data.Forms._
 import play.api.libs.json.Json
 
 import models.Hotel
-import models.Page._
-import models.Hotel._
+import models.Hotels._
 
-import play.api.libs.iteratee._
-
-import play.Logger
+import play.api.db.slick._
+import play.api.Play.current
 
 object Hotels extends Controller {
 
@@ -42,17 +40,17 @@ object Hotels extends Controller {
     Home
   }
 
-  def list(page: Int, orderBy: Int) = Action {
+  def list(page: Int, orderBy: Int) = DBAction {
     implicit request =>
-      val hotels = models.Hotel.findPage(page, orderBy)
+      val hotels = models.Hotels.findPage(page, orderBy)
       val html = views.html.hotels.list("List hotels", hotels, orderBy)
       Ok(html)
   }
 
-  def view(id: Long) = Action {
+  def view(id: Long) = DBAction {
     implicit request =>
 //      graphvizActor ! 0
-      models.Hotel.findById(id).map {
+      models.Hotels.findById(id).map {
         hotel => {
           val html = views.html.hotels.view("View Hotel", hotel)
           Ok(html)
@@ -60,9 +58,9 @@ object Hotels extends Controller {
       } getOrElse (NotFound)
   }
 
-  def edit(id: Long) = Action {
+  def edit(id: Long) = DBAction {
     implicit request =>
-      models.Hotel.findById(id).map {
+      models.Hotels.findById(id).map {
         hotel => {
           val html = views.html.hotels.edit("Edit Hotel", id, hotelForm.fill(hotel))
           Ok(html)
@@ -75,12 +73,12 @@ object Hotels extends Controller {
    *
    * @param id Id of the computer to edit
    */
-  def update(id: Long) = Action {
+  def update(id: Long) = DBAction {
     implicit request =>
       hotelForm.bindFromRequest.fold(
         formWithErrors => BadRequest(views.html.hotels.edit("Edit Hotel - errors", id, formWithErrors)),
         hotel => {
-          models.Hotel.update(id, hotel)
+          models.Hotels.update(id, hotel)
           Redirect(routes.Hotels.edit(id)).flashing("success" -> "Hotel %s has been updated".format(hotel.name))
           //          Redirect(routes.Hotels.view(hotel.id))
         }
@@ -98,12 +96,12 @@ object Hotels extends Controller {
   /**
    * Handle the 'new computer form' submission.
    */
-  def save = Action(parse.json) {
+  def save = DBAction(parse.json) {
     implicit request =>
       val json = request.body
       //      println(json)
       val hotel = json.as[Hotel]
-      val id = models.Hotel.insert(hotel)
+      val id = models.Hotels.insert(hotel)
       Ok(Json.toJson(id))
     //        Home.flashing("success" -> "Hotel %s has been created".format(hotel.name))
   }
@@ -111,21 +109,21 @@ object Hotels extends Controller {
   /**
    * Handle computer deletion.
    */
-  def delete(id: Long) = Action {
+  def delete(id: Long) = DBAction {
     implicit request =>
-      models.Hotel.delete(id)
+      models.Hotels.delete(id)
       Home.flashing("success" -> "Hotel has been deleted")
   }
 
 
 
 
-  def setAvail() = Action(parse.json){
+  def setAvail() = DBAction(parse.json){
     implicit request =>
       val json = request.body
       //      println(json)
       val hotel = json.as[Hotel]
-      val id = models.Hotel.insert(hotel)
+      val id = models.Hotels.insert(hotel)
       Ok(Json.toJson(id))
   }
 

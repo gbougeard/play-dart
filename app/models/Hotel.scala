@@ -1,13 +1,8 @@
 package models
 
-
-import play.api.Play.current
-
 import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
 
 import play.api.libs.json._
-import models.database.Hotels
 
 
 case class Hotel(
@@ -18,107 +13,74 @@ case class Hotel(
                   countryCode: Option[String],
                   addr1: Option[String] = None,
                   addr2: Option[String] = None,
-                  zipCode: Option[String] =None,
-                  latitude: Option[BigDecimal] =None,
-                  longitude: Option[BigDecimal] =None
+                  zipCode: Option[String] = None,
+                  latitude: Option[BigDecimal] = None,
+                  longitude: Option[BigDecimal] = None
                   )
 
 // define tables
-object Hotel {
+object Hotels extends DAO {
   lazy val pageSize = 10
-  lazy val totalRows = count
 
-  def findAll: Seq[Hotel] = {
-    DB.withSession {
-      implicit session: Session =>
-        (for (c <- Hotels.sortBy(_.name)) yield c)
-//          .drop(20000)
-          .take(10000)
-          .list
-    }
+
+  def findAll(implicit session: Session): Seq[Hotel] = {
+    val q = (for (c <- Hotels.sortBy(_.name)) yield c)
+    //          .drop(20000)
+    q.take(10000).list
   }
 
-  def count: Int = {
-    DB.withSession {
-      implicit session: Session =>
-        Query(Hotels.length).first
-    }
+  def count(implicit session: Session): Int = {
+    Query(Hotels.length).first
   }
 
-  def findPage(page: Int = 0, orderField: Int): Page[Hotel] = {
+  def findPage(page: Int = 0, orderField: Int)(implicit session: Session): Page[Hotel] = {
 
     val offset = pageSize * page
-    DB.withSession {
-      implicit session: Session =>
-        val hotels = (
-          for {c <- Hotels
-            .sortBy(hotel => orderField match {
-            case 1 => hotel.name.asc
-            case -1 => hotel.name.desc
-            case 2 => hotel.city.asc
-            case -2 => hotel.city.desc
-            case 3 => hotel.countryCode.asc
-            case -3 => hotel.countryCode.desc
-          })
-            .drop(offset)
-            .take(pageSize)
-          } yield c).list
+    val hotels = (
+      for {c <- Hotels
+        .sortBy(hotel => orderField match {
+        case 1 => hotel.name.asc
+        case -1 => hotel.name.desc
+        case 2 => hotel.city.asc
+        case -2 => hotel.city.desc
+        case 3 => hotel.countryCode.asc
+        case -3 => hotel.countryCode.desc
+      })
+        .drop(offset)
+        .take(pageSize)
+      } yield c)
 
 
-        Page(hotels, page, offset, totalRows)
-    }
+    Page(hotels.list, page, offset, count)
   }
 
-  def findById(id: Long): Option[Hotel] = {
-    DB.withSession {
-      implicit session: Session =>
-        Hotels.byId(id).firstOption
-    }
+  def findById(id: Long)(implicit session: Session): Option[Hotel] = {
+    Hotels.where(_.id === id).firstOption
   }
 
-  def findByCity(cityName: String): Seq[Hotel] = {
-    DB.withSession {
-      implicit session: Session =>
-        Hotels.byCity(cityName).list
-    }
+  def findByCity(cityName: String)(implicit session: Session): Seq[Hotel] = {
+    Hotels.where(_.city === cityName).list
   }
 
-  def findByState(countryName: String): Seq[Hotel] = {
-    DB.withSession {
-      implicit session: Session =>
-        Hotels.byState(countryName).list
-    }
+  def findByState(stateName: String)(implicit session: Session): Seq[Hotel] = {
+    Hotels.where(_.state === stateName).list
   }
 
-  def findByCountryCode(countryName: String): Seq[Hotel] = {
-    DB.withSession {
-      implicit session: Session =>
-        Hotels.byCountryCode(countryName).list
-    }
+  def findByCountryCode(countryName: String)(implicit session: Session): Seq[Hotel] = {
+    Hotels.where(_.countryCode === countryName).list
   }
 
 
-  def insert(hotel: Hotel): Long = {
-    DB.withSession {
-      implicit session: Session =>
-        Hotels.autoInc.insert(hotel)
-    }
+  def insert(hotel: Hotel)(implicit session: Session): Long = {
+    Hotels.insert(hotel)
   }
 
-  def update(id: Long, hotel: Hotel) = {
-    DB.withSession {
-      implicit session: Session => {
-        val hotel2update = hotel.copy(Some(id))
-        Hotels.where(_.id === id).update(hotel2update)
-      }
-    }
+  def update(hotelId: Long, hotel: Hotel)(implicit session: Session) = {
+    Hotels.where(_.id === hotelId).update(hotel)
   }
 
-  def delete(hotelId: Long) = {
-    DB.withSession {
-      implicit session: Session =>
-        Hotels.where(_.id === hotelId).delete
-    }
+  def delete(hotelId: Long)(implicit session: Session) = {
+    Hotels.where(_.id === hotelId).delete
   }
 
 

@@ -12,7 +12,7 @@ GET         /admin/metrics          com.kenshoo.play.metrics.MetricsController.m
 GET         /assets/*file           controllers.Assets.at(path="/public", file)
 
 # Hotels
-GET         /hotels/                controllers.Hotels.list(p:Int ?= 0,s:Int ?= 1)
+GET         /hotels                 controllers.Hotels.list(p:Int ?= 0,s:Int ?= 1)
 GET         /hotels/:id/edit        controllers.Hotels.edit(id : Long)
 POST        /hotels/:id/edit        controllers.Hotels.update(id : Long)
 GET         /hotels/new             controllers.Hotels.create

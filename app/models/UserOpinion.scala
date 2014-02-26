@@ -1,16 +1,13 @@
 package models
 
-import play.api.Play.current
 
 import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
 
 import play.api.libs.json._
-import models.database.UserOpinions
 
 
 case class UserOpinion(
-                        id: Option[String],
+                        id: Option[String] = None,
                         hotelid: Long,
                         custid: Long,
                         note: Double,
@@ -20,27 +17,20 @@ case class UserOpinion(
                         )
 
 // define tables
-object UserOpinion {
+object UserOpinions extends DAO {
   lazy val pageSize = 10
-  lazy val totalRows = count
 
-  def findByHotelidAndCustid(hid: Long, cid: Long): Seq[UserOpinion] = {
-    DB.withSession {
-      implicit session: Session =>
-        (for {
-          c <- UserOpinions
-          if (c.hotelid === hid)
-          if (c.custid === cid)
-        } yield c)
-          .list
-    }
+  def findByHotelidAndCustid(hid: Long, cid: Long)(implicit session: Session): Seq[UserOpinion] = {
+    (for {
+      c <- UserOpinions
+      if (c.hotelid === hid)
+      if (c.custid === cid)
+    } yield c)
+      .list
   }
 
-  def count: Int = {
-    DB.withSession {
-      implicit session: Session =>
-        Query(UserOpinions.length).first
-    }
+  def count(implicit session: Session): Int = {
+    Query(UserOpinions.length).first
   }
 
 
