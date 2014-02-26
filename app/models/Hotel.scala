@@ -24,13 +24,12 @@ object Hotels extends DAO {
 
 
   def findAll(implicit session: Session): Seq[Hotel] = {
-    val q = (for (c <- Hotels.sortBy(_.name)) yield c)
-    //          .drop(20000)
-    q.take(10000).list
+    val q = Hotels.sortBy(_.name)
+    q.list
   }
 
   def count(implicit session: Session): Int = {
-    Query(Hotels.length).first
+    Hotels.length.run
   }
 
   def findPage(page: Int = 0, orderField: Int)(implicit session: Session): Page[Hotel] = {
@@ -70,7 +69,6 @@ object Hotels extends DAO {
     Hotels.where(_.countryCode === countryName).list
   }
 
-
   def insert(hotel: Hotel)(implicit session: Session): Long = {
     Hotels.insert(hotel)
   }
@@ -82,7 +80,6 @@ object Hotels extends DAO {
   def delete(hotelId: Long)(implicit session: Session) = {
     Hotels.where(_.id === hotelId).delete
   }
-
 
   //JSON
   implicit val hotelFormat = Json.format[Hotel]

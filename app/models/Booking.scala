@@ -30,11 +30,11 @@ object Bookings extends DAO {
   lazy val pageSize = 10
 
   def findAll(implicit session: Session): Seq[Booking] = {
-    (for (c <- Bookings) yield c).list
+    Bookings.list
   }
 
   def count(implicit session: Session): Int = {
-    Query(Bookings.length).first
+    Bookings.length.run
   }
 
   def findPage(page: Int = 0, orderField: Int, filter: BookingFilter)(implicit session: Session): Page[Booking] = {

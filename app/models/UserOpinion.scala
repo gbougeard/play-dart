@@ -21,16 +21,17 @@ object UserOpinions extends DAO {
   lazy val pageSize = 10
 
   def findByHotelidAndCustid(hid: Long, cid: Long)(implicit session: Session): Seq[UserOpinion] = {
-    (for {
+    val q = (for {
       c <- UserOpinions
       if (c.hotelid === hid)
       if (c.custid === cid)
     } yield c)
-      .list
+
+    q.list
   }
 
   def count(implicit session: Session): Int = {
-    Query(UserOpinions.length).first
+    UserOpinions.length.run
   }
 
 
