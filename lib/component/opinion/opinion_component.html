@@ -1,20 +1,68 @@
-{{ cmp.opinion.id }} - <span class="stars" ng-repeat="star in cmp.stars"
-                             ng-class="cmp.starClass(star, cmp.opinion.note)"> {{cmp.starChar(star, cmp.opinion.note)}} </span>
+<div itemprop="review" itemscope itemtype="http://schema.org/Review">
+    <meta itemprop="about" content="Global note"/>
+    <span itemprop="author">{{ cmp.opinion.id }}</span> -
+    <span itemprop="name">Global note</span> -
+    <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+        <meta itemprop="worstRating" content="0"/>
+        <meta itemprop="bestRating" content="{{ cmp.stars.length }}"/>
+        <meta itemprop="ratingValue" content="{{ cmp.opinion.note }}"/>
+            <span class="stars" ng-repeat="star in cmp.stars"
+                  ng-class="cmp.starClass(star, cmp.opinion.note)">
+                {{cmp.starChar(star, cmp.opinion.note)}}
+            </span>
+    </div>
+</div>
 <a class="glyphicon glyphicon-plus" ng-click="isCollapsed = !isCollapsed">Détails</a>
 <ul collapse="!isCollapsed" class="list-unstyled">
     <li>
-        <span class=" span10 stars" ng-repeat="star in cmp.stars"
-              ng-class="cmp.starClass(star, cmp.opinion.welcome)"> {{cmp.starChar(star, cmp.opinion.welcome)}} </span>
-        <p class="span2 label label-info">Welcome </p>
+        <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+            <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                <meta itemprop="worstRating" content="0"/>
+                <meta itemprop="bestRating" content="{{ cmp.stars.length }}"/>
+                <meta itemprop="ratingValue" content="{{ cmp.opinion.welcome }}"/>
+                <span class=" span10 stars" ng-repeat="star in cmp.stars"
+                      ng-class="cmp.starClass(star, cmp.opinion.welcome)">
+                    {{cmp.starChar(star, cmp.opinion.welcome)}}
+                </span>
+
+            </div>
+            <p itemprop="name" class="span2 label label-info">Welcome </p>
+            <meta itemprop="about" content="Welcome"/>
+            <meta itemprop="author" content="{{ cmp.opinion.id }}"/>
+        </div>
     </li>
     <li>
-        <span class="stars" ng-repeat="star in cmp.stars"
-               ng-class="cmp.starClass(star, cmp.opinion.atmosphere)"> {{cmp.starChar(star, cmp.opinion.atmosphere)}} </span>
-        <p class="label label-info">Atmosphere </p>
+        <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+            <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                <meta itemprop="worstRating" content="0"/>
+                <meta itemprop="bestRating" content="{{ cmp.stars.length }}"/>
+                <meta itemprop="ratingValue" content="{{ cmp.opinion.atmosphere }}"/>
+                <span class="stars" ng-repeat="star in cmp.stars"
+                      ng-class="cmp.starClass(star, cmp.opinion.atmosphere)">
+                    {{cmp.starChar(star, cmp.opinion.atmosphere)}}
+                </span>
+
+            </div>
+            <p itemprop="name" class="label label-info">Atmosphere </p>
+            <meta itemprop="about" content="Atmosphere"/>
+            <meta itemprop="author" content="{{ cmp.opinion.id }}"/>
+        </div>
     </li>
     <li>
-        <span class="stars" ng-repeat="star in cmp.stars"
-               ng-class="cmp.starClass(star, cmp.opinion.comfort)"> {{cmp.starChar(star, cmp.opinion.comfort)}} </span>
-        <p class="label label-info">Comfort </p>
+        <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+            <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                <meta itemprop="worstRating" content="0"/>
+                <meta itemprop="bestRating" content="{{ cmp.stars.length }}"/>
+                <meta itemprop="ratingValue" content="{{ cmp.opinion.comfort }}"/>
+                <span class="stars" ng-repeat="star in cmp.stars"
+                      ng-class="cmp.starClass(star, cmp.opinion.comfort)">
+                    {{cmp.starChar(star, cmp.opinion.comfort)}}
+                </span>
+
+            </div>
+            <p itemprop="name" class="label label-info">Comfort </p>
+            <meta itemprop="about" content="Comfort"/>
+            <meta itemprop="author" content="{{ cmp.opinion.id }}"/>
+        </div>
     </li>
 </ul>
