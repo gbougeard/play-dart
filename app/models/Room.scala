@@ -15,16 +15,16 @@ object HotelCatRooms extends DAO {
   lazy val pageSize = 10
 
   def findAll(implicit session: Session): Seq[HotelCatRoom] = {
-   HotelCatRooms.list
+   hotelCatRooms.list
   }
 
   def count(implicit session: Session): Int = {
-    HotelCatRooms.length.run
+    hotelCatRooms.length.run
   }
 
 
   def findByHotelId(id: Long)(implicit session: Session): Seq[HotelCatRoom] = {
-    HotelCatRooms.where(_.hotelid === id).list
+    hotelCatRooms.where(_.hotelid === id).list
   }
 
   //JSON

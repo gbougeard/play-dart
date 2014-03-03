@@ -24,61 +24,63 @@ object Hotels extends DAO {
 
 
   def findAll(implicit session: Session): Seq[Hotel] = {
-    val q = Hotels.sortBy(_.name)
+    val q = hotels.sortBy(_.name)
     q.list
   }
 
   def count(implicit session: Session): Int = {
-    Hotels.length.run
+    hotels.length.run
   }
 
   def findPage(page: Int = 0, orderField: Int)(implicit session: Session): Page[Hotel] = {
 
     val offset = pageSize * page
-    val hotels = (
-      for {c <- Hotels
-        .sortBy(hotel => orderField match {
-        case 1 => hotel.name.asc
-        case -1 => hotel.name.desc
-        case 2 => hotel.city.asc
-        case -2 => hotel.city.desc
-        case 3 => hotel.countryCode.asc
-        case -3 => hotel.countryCode.desc
-      })
+    val q = for {
+      c <- hotels.sortBy(
+        hotel =>
+          orderField match {
+            case 1 => hotel.name.asc
+            case -1 => hotel.name.desc
+            case 2 => hotel.city.asc
+            case -2 => hotel.city.desc
+            case 3 => hotel.countryCode.asc
+            case -3 => hotel.countryCode.desc
+          }
+      )
         .drop(offset)
         .take(pageSize)
-      } yield c)
+    } yield c
 
 
-    Page(hotels.list, page, offset, count)
+    Page(q.list, page, offset, count)
   }
 
   def findById(id: Long)(implicit session: Session): Option[Hotel] = {
-    Hotels.where(_.id === id).firstOption
+    hotels.where(_.id === id).firstOption
   }
 
   def findByCity(cityName: String)(implicit session: Session): Seq[Hotel] = {
-    Hotels.where(_.city === cityName).list
+    hotels.where(_.city === cityName).list
   }
 
   def findByState(stateName: String)(implicit session: Session): Seq[Hotel] = {
-    Hotels.where(_.state === stateName).list
+    hotels.where(_.state === stateName).list
   }
 
   def findByCountryCode(countryName: String)(implicit session: Session): Seq[Hotel] = {
-    Hotels.where(_.countryCode === countryName).list
+    hotels.where(_.countryCode === countryName).list
   }
 
   def insert(hotel: Hotel)(implicit session: Session): Long = {
-    Hotels.insert(hotel)
+    hotels.insert(hotel)
   }
 
   def update(hotelId: Long, hotel: Hotel)(implicit session: Session) = {
-    Hotels.where(_.id === hotelId).update(hotel)
+    hotels.where(_.id === hotelId).update(hotel)
   }
 
   def delete(hotelId: Long)(implicit session: Session) = {
-    Hotels.where(_.id === hotelId).delete
+    hotels.where(_.id === hotelId).delete
   }
 
   //JSON

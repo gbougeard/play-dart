@@ -30,18 +30,18 @@ object Bookings extends DAO {
   lazy val pageSize = 10
 
   def findAll(implicit session: Session): Seq[Booking] = {
-    Bookings.list
+    bookings.list
   }
 
   def count(implicit session: Session): Int = {
-    Bookings.length.run
+    bookings.length.run
   }
 
   def findPage(page: Int = 0, orderField: Int, filter: BookingFilter)(implicit session: Session): Page[Booking] = {
 
     val offset = pageSize * page
 
-    val bookings = Bookings
+    val bookings = bookings
       .filter(b => filter.custId match {
       case Some(id) => b.custid === id
       case None => b.custid === b.custid
@@ -77,11 +77,11 @@ object Bookings extends DAO {
   }
 
   def findByCustId(id: Long)(implicit session: Session): Seq[Booking] = {
-    Bookings.where(_.custid === id).list
+    bookings.where(_.custid === id).list
   }
 
   def findByBkgNum(id: String)(implicit session: Session): Option[Booking] = {
-    Bookings.where(_.bkgnum === id).firstOption()
+    bookings.where(_.bkgnum === id).firstOption()
   }
 
 

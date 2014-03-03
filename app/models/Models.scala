@@ -28,10 +28,10 @@ object Page {
 }
 
 private[models] trait DAO {
-  val Hotels = TableQuery[Hotels]
-  val Bookings = TableQuery[Bookings]
-  val UserOpinions = TableQuery[UserOpinions]
-  val HotelCatRooms = TableQuery[HotelCatRooms]
+  val hotels = TableQuery[Hotels]
+  val bookings = TableQuery[Bookings]
+  val userOpinions = TableQuery[UserOpinions]
+  val hotelCatRooms = TableQuery[HotelCatRooms]
 }
 
 
