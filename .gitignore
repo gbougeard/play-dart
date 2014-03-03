@@ -7,7 +7,6 @@
 # Ignore Play! working directory #
 db
 eclipse
-lib
 log
 logs
 modules
@@ -42,3 +41,4 @@ pubspec.lock
 
 // Avoid committing generated JavaScript files
 *.dart.js
+packages

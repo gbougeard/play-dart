@@ -1,0 +1,29 @@
+<div itemscope itemtype="http://schema.org/Hotel">
+    <h1 itemprop="name">{{ cmp.hotel.name }}</h1>
+    <link itemprop="url" href="/hotels/{{ cmp.hotel.id }}" />
+
+    <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <dl class="dl-horizontal">
+            <dt>Zipcode</dt>
+            <dd itemprop="postalCode">{{ cmp.hotel.zipCode }}</dd>
+            <dt>Address</dt>
+            <dd itemprop="streetAddress">{{ cmp.hotel.addr1 }} <br/> {{ cmp.hotel.addr1 }}</dd>
+            <dt>City</dt>
+            <dd itemprop="addressLocality">{{ cmp.hotel.city }}</dd>
+            <dt>State</dt>
+            <dd itemprop="addressRegion">{{ cmp.hotel.state }}</dd>
+            <dt>Country</dt>
+            <dd itemprop="addressCountry">{{ cmp.hotel.countryCode }}</dd>
+        </dl>
+    </div>
+    <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+        <dl>
+            <dt>Latitude</dt>
+            <dd itemprop="latitude">{{ cmp.hotel.latitude }}</dd>
+            <dt>Longitude</dt>
+            <dd itemprop="longitude">{{ cmp.hotel.longitude }}</dd>
+        </dl>
+        <meta itemprop="latitude" content="{{ cmp.hotel.latitude }}" />
+        <meta itemprop="longitude" content="{{ cmp.hotel.longitude }}" />
+    </div>
+</div>
