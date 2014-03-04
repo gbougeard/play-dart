@@ -1,97 +1,99 @@
 @(message: String, currentPage: Page[Hotel], currentOrderBy: Int)(implicit flash: play.api.mvc.Flash)
 
-@import tags._
+    @import tags._
 
- @scripts={}
+    @scripts = {}
 
-@****************************************
-* Helper generating menuChaine links    *
-****************************************@
-@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-routes.Hotels.list(newPage
-, newOrderBy.map { orderBy =>
-if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
-}.getOrElse(currentOrderBy))
-}
-@**, currentFilter)
-**@
-
-@**********************************
-* Helper generating table headers *
-***********************************@
-@header(orderBy: Int, title: String) = {
-<th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
-    <a href="@link(0, Some(orderBy))">@title</a>
-</th>
-}
-
-@main(message, scripts) {
-
-@Option(currentPage.items).filterNot(_.isEmpty).map { hotels =>
-<table class="table table-striped table-bordered table-hover">
-    <thead>
-    <tr>
-        @header(0,"Id")
-        @header(1,"Nom")
-        @header(2,"City")
-        @header(3,"Country")
-        @header(4,"Adress")
-        @header(4,"Zipcode")
-    </tr>
-    </thead>
-    <tbody>
-
-    @hotels.map {  hotel =>
-            <tr>
-                <td>@hotel.id.getOrElse(0)</td>
-                <td><a href="@routes.Hotels.view(hotel.id.getOrElse(0))">@hotel.name</a></td>
-                <td>@Html(hotel.city.getOrElse("<em>-</em>") )</td>
-                <td>@hotel.countryCode.map { country =>
-                    @flag(country)
-                    }
-                </td>
-                <td>@hotel.addr1.get @hotel.addr2.get</td>
-                <td>@hotel.zipCode.get</td>
-            </tr>
+        @****************************************
+        * Helper generating menuChaine links *
+        ****************************************@
+    @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+        routes.Hotels.list(newPage
+            , newOrderBy.map {
+                orderBy =>
+                    if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+            }.getOrElse(currentOrderBy))
+    }
+    @**, currentFilter)
+    **@
+        @**********************************
+        * Helper generating table headers *
+        ***********************************@
+    @header(orderBy: Int, title: String) = {
+        <th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{
+            if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"
+        }">
+            <a href="@link(0, Some(orderBy))">@title</a>
+        </th>
     }
 
-    </tbody>
-</table>
+    @main(message, scripts) {
 
-<div >
-    <ul class="pagination">
-        @currentPage.prev.map { page =>
-            <li >
-                <a href="@link(page)">&larr; Previous</a>
-            </li>
+        @Option(currentPage.items).filterNot(_.isEmpty).map { hotels =>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        @header(0, "Id")
+                        @header(1, "Nom")
+                        @header(2, "City")
+                        @header(3, "Country")
+                        @header(4, "Adress")
+                        @header(4, "Zipcode")
+                    </tr>
+                </thead>
+                <tbody>
+
+                @hotels.map { hotel =>
+                    <tr>
+                        <td>@hotel.id.getOrElse(0)</td>
+                        <td><a href="@routes.Hotels.view(hotel.id.getOrElse(0))">@hotel.name</a></td>
+                        <td>@Html(hotel.city.getOrElse("<em>-</em>"))</td>
+                        <td>@hotel.countryCode.map { country =>
+                            @flag(country)
+                        }
+                        </td>
+                        <td>@hotel.addr1.get @hotel.addr2.get</td>
+                        <td>@hotel.zipCode.get</td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+
+            <div >
+                <ul class="pagination">
+                    @currentPage.prev.map { page =>
+                        <li >
+                            <a href="@link(page)">&larr; Previous</a>
+                        </li>
+                    }.getOrElse {
+                        <li class=" disabled">
+                            <a>&larr; Previous</a>
+                        </li>
+                    }
+                <li class="active">
+                    <a>Displaying @{currentPage.offset + 1} to @{currentPage.offset + hotels.size} of @currentPage.total</a>
+                </li>
+                    @currentPage.next.map { page =>
+                        <li >
+                            <a href="@link(page)">Next &rarr;</a>
+                        </li>
+                    }.getOrElse {
+                        <li class=" disabled">
+                            <a>Next &rarr;</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="form-actions">
+                <a href="@routes.Hotels.create()" class="btn btn-success">New</a>
+            </div>
         }.getOrElse {
-            <li class=" disabled">
-                <a>&larr; Previous</a>
-            </li>
+
+            <div class="well">
+                <em>Nothing to display</em>
+            </div>
+
         }
-        <li class="active">
-            <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + hotels.size) of @currentPage.total</a>
-        </li>
-        @currentPage.next.map { page =>
-            <li >
-                <a href="@link(page)">Next &rarr;</a>
-            </li>
-        }.getOrElse {
-            <li class=" disabled">
-                <a>Next &rarr;</a>
-            </li>
-        }
-    </ul>
-</div>
-
-<div class="form-actions">
-    <a href="@routes.Hotels.create()" class="btn btn-success">New</a>
-</div>
-}.getOrElse {
-
-<div class="well">
-    <em>Nothing to display</em>
-</div>
-
-}
-}
+    }

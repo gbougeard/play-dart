@@ -10,6 +10,7 @@ import models.Hotels._
 
 import play.api.db.slick._
 import play.api.Play.current
+import play.Logger
 
 object Hotels extends Controller {
 
@@ -33,18 +34,20 @@ object Hotels extends Controller {
       (Hotel.apply)(Hotel.unapply)
   )
 
-  val Home = Redirect(routes.Hotels.list(0, 0))
+  val Home = Redirect(routes.Hotels.list())
 
   // -- Actions
   def index = Action {
     Home
   }
 
-  def list(page: Int, orderBy: Int) = DBAction {
+  def list(page: Int =0, orderBy: Int=0) = DBAction {
     implicit request =>
       val hotels = models.Hotels.findPage(page, orderBy)
-      val html = views.html.hotels.list("List hotels", hotels, orderBy)
-      Ok(html)
+      render {
+        case Accepts.Html() => Ok(views.html.hotels.list("List hotels", hotels, orderBy))
+        case Accepts.Json() => Ok(Json.toJson(hotels))
+      }
   }
 
   def view(id: Long) = DBAction {
@@ -52,10 +55,15 @@ object Hotels extends Controller {
 //      graphvizActor ! 0
       models.Hotels.findById(id).map {
         hotel => {
-          val html = views.html.hotels.view("View Hotel", hotel)
-          Ok(html)
+          render {
+            case Accepts.Html() => Ok(views.html.hotels.view("View Hotel", hotel))
+            case Accepts.Json() => Ok(Json.toJson(hotel))
+          }
         }
-      } getOrElse (NotFound)
+      } getOrElse {
+        Logger.warn(s"Hotel $id not found")
+        NotFound
+      }
   }
 
   def edit(id: Long) = DBAction {
@@ -65,7 +73,10 @@ object Hotels extends Controller {
           val html = views.html.hotels.edit("Edit Hotel", id, hotelForm.fill(hotel))
           Ok(html)
         }
-      } getOrElse (NotFound)
+      } getOrElse {
+        Logger.warn(s"Hotel $id not found")
+        NotFound
+      }
   }
 
   /**
@@ -115,9 +126,6 @@ object Hotels extends Controller {
       Home.flashing("success" -> "Hotel has been deleted")
   }
 
-
-
-
   def setAvail() = DBAction(parse.json){
     implicit request =>
       val json = request.body
@@ -126,7 +134,5 @@ object Hotels extends Controller {
       val id = models.Hotels.insert(hotel)
       Ok(Json.toJson(id))
   }
-
-
 
 }

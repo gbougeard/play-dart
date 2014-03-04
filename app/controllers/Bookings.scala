@@ -9,19 +9,20 @@ import play.api.libs.json.Json
 
 import play.api.db.slick._
 import play.api.Play.current
+import play.Logger
 
 
 object Bookings extends Controller {
 
 
-  val Home = Redirect(routes.Bookings.list(0, 0))
+  val Home = Redirect(routes.Bookings.list())
 
   // -- Actions
   def index = Action {
     Home
   }
 
-  def list(page: Int, orderBy: Int) = DBAction {
+  def list(page: Int = 0, orderBy: Int = 0) = DBAction {
     implicit request =>
       val custId: Option[Long] = request.getQueryString("custid").map {
         _.toLong
@@ -31,7 +32,7 @@ object Bookings extends Controller {
       }
       val statuses:Set[String] = request.getQueryString("statuses").map {
         s => s.split(',').toSet
-      } getOrElse (Set())
+      } getOrElse Set()
 
       val bookingFilter = new BookingFilter(custId, hotelId, statuses)
 
@@ -52,7 +53,10 @@ object Bookings extends Controller {
             case Accepts.Json() => Ok(Json.toJson(booking))
           }
         }
-      } getOrElse (NotFound)
+      } getOrElse {
+        Logger.warn(s"Booking $id not found")
+        NotFound
+      }
   }
 
 
