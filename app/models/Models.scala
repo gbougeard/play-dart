@@ -4,7 +4,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Writes
 import scala.slick.lifted.TableQuery
-import models.database.{HotelCatRooms, UserOpinions, Bookings, Hotels}
+import models.database._
 
 // Use the implicit threadLocalSession
 
@@ -32,6 +32,7 @@ private[models] trait DAO {
   val bookings = TableQuery[Bookings]
   val userOpinions = TableQuery[UserOpinions]
   val hotelCatRooms = TableQuery[HotelCatRooms]
+  val paxs = TableQuery[Paxs]
 }
 
 
