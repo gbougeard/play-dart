@@ -45,6 +45,7 @@ object Hotels extends DAO {
             case -2 => hotel.city.desc
             case 3 => hotel.countryCode.asc
             case -3 => hotel.countryCode.desc
+            case _ => hotel.name.asc
           }
       )
         .drop(offset)

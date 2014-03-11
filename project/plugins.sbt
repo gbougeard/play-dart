@@ -12,3 +12,5 @@ resolvers += Resolver.url("scalasbt", new URL("http://scalasbt.artifactoryonline
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "0.6.3")
 
 addSbtPlugin("net.orcades" % "sbt-dart-plugin" % "0.2.2-SNAPSHOT")
+
+addSbtPlugin("com.typesafe" %% "sbt-jshint-plugin" % "1.0.0-M1")

@@ -1,5 +1,9 @@
 import com.typesafe.sbt.SbtNativePackager.packageArchetype
 import com.typesafe.sbt.packager.Keys._
+import com.typesafe.web.sbt.WebPlugin
+import com.typesafe.jse.sbt.JsEnginePlugin
+import com.typesafe.web.sbt.WebPlugin.WebKeys
+import com.typesafe.jshint.sbt.JSHintPlugin
 import Dependencies._
 
 
@@ -39,6 +43,20 @@ libraryDependencies ++= Seq(
 )     
 
 play.Project.playScalaSettings
+
+WebPlugin.webSettings
+
+JsEnginePlugin.jsEngineSettings
+
+JSHintPlugin.jshintSettings
+
+//sourceDirectory in WebKeys.Assets := (sourceDirectory in Compile).value / "assets"
+
+//WebKeys.jsFilter in WebKeys.Assets := new PatternFilter("""[^_].*\.js""".r.pattern)
+
+//resourceDirectory in WebKeys.Assets := (baseDirectory in Compile).value / "public"
+
+//resourceManaged in WebKeys.Assets := (classDirectory in Compile).value / "public"
 
 dartEntryPoints ++= Seq("main.dart" , "opinion.dart")
 

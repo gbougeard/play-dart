@@ -1,0 +1,19 @@
+@(message: String)
+
+    @scripts = {
+        <link rel="stylesheet" href="@routes.Assets.at("javascripts/raml/api-console/dist/styles/app.css")" type="text/css" />
+    }
+
+@main("RAML console", scripts) {
+
+    <div ng-app="ramlConsoleApp" ng-cloak id="raml-console-unembedded">
+        <script src="@routes.Assets.at("javascripts/raml/api-console/dist/scripts/vendor.js")"></script>
+        <script src="@routes.Assets.at("javascripts/raml/api-console/dist/scripts/app.js")"></script>
+
+        <div>
+            <raml-console src="@routes.Assets.at("javascripts/raml/FAM.raml")"></raml-console>
+        </div>
+
+    </div>
+    <a href="/api/editor">Editor</a>
+}

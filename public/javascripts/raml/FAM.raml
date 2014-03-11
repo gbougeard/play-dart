@@ -1,0 +1,20 @@
+#%RAML 0.8
+title: FAM API
+version: v1
+baseUri: http://api.fam.gbougeard.net/{version}
+
+/places:
+  get:
+    queryParameters:
+      s: 
+        displayName: Sort column
+        type: number
+        description: Sort column index
+        example: 1
+        required: false
+      p: 
+  /{id}:
+    get:
+    post:
+    delete:
+  

@@ -33,4 +33,7 @@ class Hotels(tag: Tag) extends Table[Hotel](tag, "hotel") {
 
   def * = (id.? , name, city.? , state.?, countryCode.?, addr1.?, addr2.?, zipCode.?, latitude.?, longitude.?) <>(Hotel.tupled, Hotel.unapply _)
 
+  // A reified foreign key relation that can be navigated to create a join
+//  def supplier = foreignKey("SUP_FK", supID, suppliers)(_.id)
+
 }

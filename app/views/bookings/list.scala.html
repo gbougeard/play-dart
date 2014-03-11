@@ -73,7 +73,7 @@ if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
             </li>
         }
         <li class="active">
-            <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + bookings.size) of @currentPage.total</a>
+            <a>Displaying @{currentPage.offset + 1} to @{currentPage.offset + bookings.size} of @currentPage.total</a>
         </li>
         @currentPage.next.map { page =>
             <li >

@@ -1,0 +1,87 @@
+@(message: String, currentPage: Page[Pax], currentOrderBy: Int)(implicit flash: play.api.mvc.Flash)
+
+@import tags._
+
+ @scripts={}
+
+@****************************************
+* Helper generating menuChaine links    *
+****************************************@
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+routes.Paxs.list(newPage
+, newOrderBy.map { orderBy =>
+if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+}.getOrElse(currentOrderBy))
+}
+@**, currentFilter)
+**@
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(orderBy: Int, title: String) = {
+<th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
+    <a href="@link(0, Some(orderBy))">@title</a>
+</th>
+}
+
+@main(message, scripts) {
+
+@Option(currentPage.items).filterNot(_.isEmpty).map { paxs =>
+<a href="@routes.Paxs.list()" class="btn">Clear filters</a>
+        <hr/>
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+        @header(1,"Email")
+        @header(2,"CustId")
+        @header(5,"PartId")
+    </tr>
+    </thead>
+    <tbody>
+
+    @paxs.map {  pax =>
+            <tr>
+                <td><a href="@routes.Paxs.view(pax.id.get)">@pax.id @pax.email</a></td>
+                <td>@pax.custId</td>
+                <td>@pax.partId</td>
+            </tr>
+    }
+
+    </tbody>
+</table>
+
+<div id="pagination" >
+    <ul class="pagination">
+        @currentPage.prev.map { page =>
+            <li >
+                <a href="@link(page)">&larr; Previous</a>
+            </li>
+        }.getOrElse {
+            <li class=" disabled">
+                <a>&larr; Previous</a>
+            </li>
+        }
+        <li class="active">
+            <a>Displaying @{currentPage.offset + 1} to @{currentPage.offset + paxs.size} of @currentPage.total</a>
+        </li>
+        @currentPage.next.map { page =>
+            <li >
+                <a href="@link(page)">Next &rarr;</a>
+            </li>
+        }.getOrElse {
+            <li class=" disabled">
+                <a>Next &rarr;</a>
+            </li>
+        }
+    </ul>
+</div>
+
+}.getOrElse {
+
+<div class="well">
+    <em>Nothing to display</em>
+</div>
+
+}
+}

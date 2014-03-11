@@ -9,7 +9,7 @@ case class Pax(
                   id: Option[Long],
                   custId: Long,
                   partId: Long,
-                  login: String,
+                  login: Option[String],
                   city: Option[String],
                   state: Option[String] = None,
                   countryCode: Option[String],
@@ -43,12 +43,13 @@ object Paxs extends DAO {
       c <- paxs.sortBy(
         pax =>
           orderField match {
-            case 1 => pax.lastName.asc
-            case -1 => pax.lastName.desc
-            case 2 => pax.city.asc
-            case -2 => pax.city.desc
-            case 3 => pax.countryCode.asc
-            case -3 => pax.countryCode.desc
+            case 1 => pax.email.asc
+            case -1 => pax.email.desc
+            case 2 => pax.custId.asc
+            case -2 => pax.custId.desc
+            case 3 => pax.partId.asc
+            case -3 => pax.partId.desc
+            case _ => pax.login.asc
           }
       )
         .drop(offset)

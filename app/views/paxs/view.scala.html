@@ -1,0 +1,27 @@
+@(message: String, pax: Pax)(implicit flash: play.api.mvc.Flash)
+
+    @scripts = {
+    }
+
+@main(message, scripts) {
+    <div class="header" >
+
+        <dl class="dl-horizontal">
+            <dt>Email</dt>
+            <dd>@pax.email</dd>
+            <dt>CustId</dt>
+            <dd>@pax.custId</dd>
+            <dt>PartId</dt>
+            <dd>@pax.partId</dd>
+        </dl>
+
+
+    </div>
+
+
+
+    <div class="form-actions">
+        <a href="@routes.Paxs.list()" class="btn btn-inverse">Cancel</a>
+    </div>
+
+}

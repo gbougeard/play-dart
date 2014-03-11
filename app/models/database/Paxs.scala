@@ -20,7 +20,7 @@ class Paxs(tag: Tag) extends Table[Pax](tag, "pax") {
 
   def city = column[String]("city")
 
-  def countryCode = column[String]("ctrcode")
+  def countryCode = column[String]("ctrycode")
 
   def state = column[String]("state")
 
@@ -36,6 +36,6 @@ class Paxs(tag: Tag) extends Table[Pax](tag, "pax") {
 
   def lastName = column[String]("lastname")
 
-  def * = (id.?, custId, partId, login, city.?, state.?, countryCode.?, addr1.?, addr2.?, zipCode.?, email, firstName.?, lastName.?) <>(Pax.tupled, Pax.unapply _)
+  def * = (id.?, custId, partId, login.?, city.?, state.?, countryCode.?, addr1.?, addr2.?, zipCode.?, email, firstName.?, lastName.?) <>(Pax.tupled, Pax.unapply _)
 
 }
